@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% from 'pagination.html' import render_pagination %}
+
+{% block content %}
+<div class="container">
+    <h3 class="pt-5">Комментарии к курсу <b>{{ course.name }}</b></h3>
+    <form>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group">
+                    <div class="my-3">
+                        <select class="form-control selectpicker" data-live-search="true" name="select_sort" title="Параметр сортировки">
+                            <option value="1" {%if sort_params == 1%}selected{% endif %}>По новизне</option>
+                            <option value="2" {%if sort_params == 2%}selected{% endif %}>Сначала положительные</option>
+                            <option value="3" {%if sort_params == 3%}selected{% endif %}>Сначала отрицательные</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group mt-3">
+                    <input type="submit" class="btn btn-primary" value="Применить">
+                </div>
+            </div>
+        </div>
+    </form>
+    {% for comment in reviews %}
+        <div class="media-block my-3 back-gr">
+            <div class="row ">
+                <div class="col-md-2 my-3">
+                    <div class="profile">
+                        <img width='100' class="rounded-circle cursor-pointer ml-5"
+                        src="{{ url_for('static', filename='images/default-profile-picture-300x300.jpeg') }}" alt="profile-pic">
+                    </div>
+                </div>
+                <div class="col-md-10 mt-3">
+                    <div class="media-body">
+                        <div class="row">
+                            <h5 class="btn-link text-semibold media-heading box-inline ">
+                                {% for user in users %}
+                                    {% if user.id == comment.user_id %}
+                                        {{ user.full_name }}
+                                    {% endif %}
+                                {% endfor %}
+                            </h5>
+                            <p class="text-muted ml-4">{{ comment.created_at }}</p>
+                        </div>
+                        <div class="row">
+                            <p class="text-muted text-sm"><b class="fa fa-mobile fa-lg">Оценка: {% if comment.rating==5 %}отлично
+                                {% elif comment.rating==4 %}хорошо{% elif comment.rating==3 %}удовлетворительно
+                                {% elif comment.rating==2 %}неудовлетворительно{% elif comment.rating==1 %}плохо{% else %}ужасно {% endif %}</b></p>
+                        </div>
+                        <p class="review" name="text">{{ comment.text }}</p>
+                    </div>
+                </div>  
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{{ render_pagination(pagination, request.endpoint, search_params) }}
+{% endblock %}
