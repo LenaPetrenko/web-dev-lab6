@@ -16,7 +16,7 @@ PARAMS_OF_REVIEW = ['rating', 'text', 'course_id', 'user_id']
 def params():
     return { param: request.form.get(param) for param in ALLOWABLE_PARAMS }
 
-def search_params():
+def search_param():
     return {
         'name': request.args.get('name'),
         'category_ids': request.args.getlist('category_ids')
@@ -27,7 +27,7 @@ def search_params():
 def index():
     page = request.args.get('page', 1, type=int)
     categories = Category.query.all()
-    courses_filter = CoursesFilter(**search_params())
+    courses_filter = CoursesFilter(**search_param())
     courses = courses_filter.perform()
     pagination = courses.paginate(page, PER_PAGE)
     courses = pagination.items
@@ -36,7 +36,7 @@ def index():
         courses=courses, 
         categories=categories, 
         pagination=pagination,
-        search_params=search_params(),
+        search_param=search_param(),
     )
 
 @bp.route('/new')
@@ -126,7 +126,7 @@ def course_reviews(course_id):
     users=users, 
     course=course, 
     pagination=pagination, 
-    search_params=search_parameters, 
+    search_param=search_parameters, 
     sort_params=sort_params)
 
 
