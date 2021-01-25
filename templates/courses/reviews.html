@@ -7,7 +7,7 @@
     <h3 class="pt-5">Комментарии к курсу <b>{{ course.name }}</b></h3>
     <form>
         <div class="row">
-            <div class="col-8">
+            <div class="col-9">
                 <div class="form-group">
                     <div class="my-3">
                         <select class="form-control selectpicker" data-live-search="true" name="select_sort" title="Параметр сортировки">
@@ -18,7 +18,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <div class="form-group mt-3">
                     <input type="submit" class="btn btn-primary" value="Применить">
                 </div>
@@ -58,5 +58,5 @@
         </div>
     {% endfor %}
 </div>
-{{ render_pagination(pagination, request.endpoint, search_params) }}
+{{ render_pagination(pagination, request.endpoint, search_param) }}
 {% endblock %}
